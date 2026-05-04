@@ -1,0 +1,276 @@
+/* 清空数据弹窗 */
+.reset-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.reset-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.reset-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.reset-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: rgba(20, 10, 30, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    z-index: 1;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.reset-modal.show .reset-modal-content {
+    transform: scale(1);
+}
+
+/* 弹窗头部 */
+.reset-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 100, 100, 0.2);
+}
+
+.reset-modal-header h2 {
+    color: #FF6464;
+    font-size: 1.3em;
+    margin: 0;
+}
+
+.reset-modal-close {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.reset-modal-close:hover {
+    background: rgba(255, 100, 100, 0.3);
+    border-color: rgba(255, 100, 100, 0.5);
+}
+
+/* 警告提示 */
+.reset-warning {
+    background: rgba(255, 100, 100, 0.1);
+    border: 1px solid rgba(255, 100, 100, 0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+}
+
+.reset-warning p {
+    color: #FF6464;
+    font-size: 0.9em;
+    margin: 0;
+    text-align: center;
+}
+
+/* 选项列表 */
+.reset-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* 单个选项 */
+.reset-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.reset-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(-4px);
+}
+
+.reset-option.danger {
+    border-color: rgba(255, 100, 100, 0.2);
+    background: rgba(255, 100, 100, 0.05);
+}
+
+.reset-option.danger:hover {
+    background: rgba(255, 100, 100, 0.1);
+}
+
+/* 选项图标 */
+.reset-option-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6em;
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+/* 选项信息 */
+.reset-option-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.reset-option-name {
+    font-size: 0.95em;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.reset-option-desc {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 6px;
+}
+
+.reset-option-detail {
+    font-size: 0.75em;
+    color: rgba(232, 180, 255, 0.7);
+    line-height: 1.5;
+}
+
+/* 重置按钮 */
+.reset-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.reset-btn.warning {
+    background: rgba(255, 193, 7, 0.15);
+    border-color: rgba(255, 193, 7, 0.3);
+    color: #FFC107;
+}
+
+.reset-btn.warning:hover {
+    background: rgba(255, 193, 7, 0.25);
+    transform: scale(1.05);
+}
+
+.reset-btn.danger {
+    background: rgba(255, 100, 100, 0.15);
+    border-color: rgba(255, 100, 100, 0.3);
+    color: #FF6464;
+}
+
+.reset-btn.danger:hover {
+    background: rgba(255, 100, 100, 0.25);
+    transform: scale(1.05);
+}
+
+.reset-btn.cancel {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    padding: 12px;
+}
+
+.reset-btn.cancel:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* 底部 */
+.reset-footer {
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 存档管理弹窗中的清空数据按钮 */
+.reset-section {
+    border-top: 1px solid rgba(255, 100, 100, 0.2);
+    margin-top: 16px;
+    padding-top: 16px;
+}
+
+.reset-section h3 {
+    color: rgba(255, 100, 100, 0.8) !important;
+}
+
+.reset-data-btn {
+    background: rgba(255, 100, 100, 0.1) !important;
+    border-color: rgba(255, 100, 100, 0.3) !important;
+    color: #FF6464 !important;
+}
+
+.reset-data-btn:hover {
+    background: rgba(255, 100, 100, 0.2) !important;
+}
+
+/* 滚动条 */
+.reset-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.reset-modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.reset-modal-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 100, 100, 0.3);
+    border-radius: 3px;
+}
+
+/* 响应式 */
+@media (max-width: 500px) {
+    .reset-modal-content {
+        width: 95%;
+        padding: 16px;
+    }
+    
+    .reset-option {
+        flex-wrap: wrap;
+    }
+    
+    .reset-btn {
+        width: 100%;
+        margin-top: 8px;
+    }
+}

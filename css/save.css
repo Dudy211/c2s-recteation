@@ -1,0 +1,429 @@
+/* 存档管理弹窗 */
+.save-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.save-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.save-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.save-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: rgba(20, 10, 30, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(232, 180, 255, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    z-index: 1;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.save-modal.show .save-modal-content {
+    transform: scale(1);
+}
+
+/* 弹窗头部 */
+.save-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(232, 180, 255, 0.2);
+}
+
+.save-modal-header h2 {
+    color: #E8B4FF;
+    font-size: 1.3em;
+    margin: 0;
+}
+
+.save-modal-close {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.save-modal-close:hover {
+    background: rgba(255, 100, 100, 0.3);
+    border-color: rgba(255, 100, 100, 0.5);
+}
+
+/* 存档区域 */
+.save-section {
+    margin-bottom: 24px;
+}
+
+.save-section h3 {
+    color: rgba(232, 180, 255, 0.8);
+    font-size: 0.9em;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+/* 存档槽位网格 */
+.save-slots-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+/* 存档槽位 */
+.save-slot {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.save-slot:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-4px);
+}
+
+.save-slot.auto-save {
+    border-color: rgba(0, 212, 255, 0.3);
+    background: rgba(0, 212, 255, 0.08);
+}
+
+.save-slot.has-data {
+    border-color: rgba(232, 180, 255, 0.3);
+}
+
+.save-slot.empty {
+    border-style: dashed;
+    opacity: 0.7;
+}
+
+.save-slot.empty:hover {
+    opacity: 1;
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.slot-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.slot-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.slot-name {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+.slot-desc {
+    font-size: 0.75em;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.slot-stats {
+    font-size: 0.8em;
+    color: #FFD700;
+    margin-top: 4px;
+}
+
+.slot-action {
+    padding: 6px 14px;
+    background: rgba(0, 212, 255, 0.15);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 6px;
+    color: #00D4FF;
+    font-size: 0.8em;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* 槽位操作按钮组 */
+.slot-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.slot-btn {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid;
+    font-size: 0.7em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.slot-btn.load {
+    background: rgba(0, 212, 255, 0.15);
+    border-color: rgba(0, 212, 255, 0.3);
+    color: #00D4FF;
+}
+
+.slot-btn.save {
+    background: rgba(255, 215, 0, 0.15);
+    border-color: rgba(255, 215, 0, 0.3);
+    color: #FFD700;
+}
+
+.slot-btn.export {
+    background: rgba(232, 180, 255, 0.15);
+    border-color: rgba(232, 180, 255, 0.3);
+    color: #E8B4FF;
+}
+
+.slot-btn.delete {
+    background: rgba(255, 100, 100, 0.15);
+    border-color: rgba(255, 100, 100, 0.3);
+    color: #FF6464;
+}
+
+.slot-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+/* 导入导出按钮 */
+.save-import-export {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.save-btn {
+    padding: 12px 20px;
+    background: rgba(232, 180, 255, 0.1);
+    border: 1px solid rgba(232, 180, 255, 0.2);
+    border-radius: 10px;
+    color: #E8B4FF;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.save-btn:hover {
+    background: rgba(232, 180, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.import-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.import-btn input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* 导入菜单 */
+.import-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.import-menu-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    border-radius: 16px;
+}
+
+.import-menu-content {
+    position: relative;
+    background: rgba(30, 15, 40, 0.95);
+    border: 1px solid rgba(232, 180, 255, 0.3);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1;
+    min-width: 280px;
+}
+
+.import-menu-content h3 {
+    color: #E8B4FF;
+    margin: 0 0 8px;
+    text-align: center;
+}
+
+.import-option {
+    padding: 14px;
+    background: rgba(0, 212, 255, 0.15);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    color: #00D4FF;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.import-option:hover {
+    background: rgba(0, 212, 255, 0.25);
+}
+
+.import-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.import-slots p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8em;
+    margin: 0;
+    text-align: center;
+}
+
+.import-slot-btn {
+    padding: 10px;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 6px;
+    color: #FFD700;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.import-slot-btn:hover {
+    background: rgba(255, 215, 0, 0.2);
+}
+
+.import-cancel {
+    padding: 10px;
+    background: rgba(255, 100, 100, 0.15);
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    border-radius: 6px;
+    color: #FF6464;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+}
+
+.import-cancel:hover {
+    background: rgba(255, 100, 100, 0.25);
+}
+
+/* 滚动条 */
+.save-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.save-modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.save-modal-content::-webkit-scrollbar-thumb {
+    background: rgba(232, 180, 255, 0.3);
+    border-radius: 3px;
+}
+
+/* 响应式 */
+@media (max-width: 500px) {
+    .save-modal-content {
+        width: 95%;
+        padding: 16px;
+    }
+    
+    .save-slot {
+        flex-wrap: wrap;
+    }
+    
+    .slot-actions {
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+/* APK 模式提示 */
+.apk-notice {
+    text-align: center;
+    padding: 16px;
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px dashed rgba(0, 212, 255, 0.3);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85em;
+    line-height: 1.6;
+}
+
+.apk-notice p {
+    margin: 4px 0;
+}
+
+.apk-notice p:first-child {
+    color: #00D4FF;
+    font-weight: bold;
+}
