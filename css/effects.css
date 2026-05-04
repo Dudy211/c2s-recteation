@@ -1,0 +1,69 @@
+/* 升级闪光 */
+.levelup-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(232,180,255,0.3) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 50;
+    transition: opacity 0.3s;
+}
+
+.levelup-flash.active {
+    opacity: 1;
+    animation: flashFade 0.6s ease-out forwards;
+}
+
+@keyframes flashFade {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 飘字容器 */
+.float-texts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* 飘字 */
+.float-text {
+    position: absolute;
+    font-weight: bold;
+    text-shadow: 0 0 12px currentColor;
+    animation: floatUp 1.2s ease-out forwards;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.float-text.gold {
+    color: #FFD700;
+    font-size: 1.4em;
+}
+
+.float-text.crit {
+    color: #FF4444;
+    font-size: 1.8em;
+}
+
+.float-text.levelup {
+    color: #E8B4FF;
+    font-size: 2em;
+}
+
+.float-text.system {
+    color: #fff;
+    font-size: 1em;
+}
+
+@keyframes floatUp {
+    0% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -120px) scale(1.3); }
+}
