@@ -1,0 +1,63 @@
+/* 树状画布区域 */
+.engine-tree-viewport {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+}
+
+.engine-tree-viewport:active {
+    cursor: grabbing;
+}
+
+.engine-tree-canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2000px;
+    height: 2000px;
+}
+
+/* 连接线 SVG */
+.tree-connections {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.tree-connections path {
+    transition: all 0.3s ease;
+    pointer-events: stroke;
+}
+
+/* 活跃连线 */
+.tree-link.active-link {
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5))
+            drop-shadow(0 0 10px rgba(232, 180, 255, 0.3));
+    transition: all 0.3s ease;
+}
+
+/* 未解锁连线 */
+.tree-link.inactive-link {
+    transition: all 0.3s ease;
+}
+
+/* 路线流动动画 */
+.tree-link.route-flow {
+    stroke-dasharray: 12 20;
+    animation: routeFlow 0.6s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9))
+            drop-shadow(0 0 16px rgba(232, 180, 255, 0.7)) !important;
+    stroke-width: 7 !important;
+    opacity: 1 !important;
+}
+
+@keyframes routeFlow {
+    0%   { stroke-dashoffset: 32; }
+    100% { stroke-dashoffset: 0; }
+}

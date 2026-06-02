@@ -1,0 +1,627 @@
+/* 节点 */
+.tree-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    animation: nodeAppear 0.4s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes nodeAppear {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.tree-node:hover {
+    z-index: 10;
+}
+
+.tree-node:hover .tree-node-inner {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(232, 180, 255, 0.4);
+}
+
+/* 方形节点核心样式 */
+.tree-node-inner {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20, 10, 30, 0.9);
+    border: 3px solid;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+/* 升级节点 - 蓝光 */
+.tree-node.type-upgrade .tree-node-inner {
+    border-color: rgba(100, 180, 255, 0.5);
+    box-shadow: 0 0 16px rgba(100, 180, 255, 0.2), inset 0 0 10px rgba(100, 180, 255, 0.08);
+}
+
+.tree-node.type-upgrade.unlocked .tree-node-inner {
+    animation: glowBlue 2.5s ease-in-out infinite;
+}
+
+/* 挑战节点 - 未完成红光 */
+.tree-node.type-challenge:not(.challenge-complete) .tree-node-inner {
+    border-color: rgba(255, 100, 100, 0.5);
+    box-shadow: 0 0 16px rgba(255, 100, 100, 0.2), inset 0 0 10px rgba(255, 100, 100, 0.08);
+    animation: glowRed 2.5s ease-in-out infinite;
+}
+
+/* 挑战节点 - 完成绿光 */
+.tree-node.type-challenge.challenge-complete .tree-node-inner {
+    border-color: rgba(100, 255, 150, 0.5);
+    box-shadow: 0 0 16px rgba(100, 255, 150, 0.2), inset 0 0 10px rgba(100, 255, 150, 0.08);
+    animation: glowGreen 2.5s ease-in-out infinite;
+}
+
+/* 可用但未解锁状态 */
+.tree-node.available .tree-node-inner {
+    animation: pulseAvailable 2s infinite;
+}
+
+.tree-node.locked .tree-node-inner {
+    border-color: rgba(100, 100, 100, 0.25);
+    opacity: 0.5;
+    filter: grayscale(0.6);
+}
+
+/* 发光动画 */
+@keyframes glowBlue {
+    0%, 100% { box-shadow: 0 0 18px rgba(100, 180, 255, 0.35), 0 0 36px rgba(100, 180, 255, 0.1), inset 0 0 10px rgba(100, 180, 255, 0.1); }
+    50% { box-shadow: 0 0 28px rgba(100, 180, 255, 0.6), 0 0 56px rgba(100, 180, 255, 0.2), inset 0 0 14px rgba(100, 180, 255, 0.15); }
+}
+
+@keyframes glowRed {
+    0%, 100% { box-shadow: 0 0 18px rgba(255, 100, 100, 0.35), 0 0 36px rgba(255, 100, 100, 0.1), inset 0 0 10px rgba(255, 100, 100, 0.1); }
+    50% { box-shadow: 0 0 28px rgba(255, 100, 100, 0.6), 0 0 56px rgba(255, 100, 100, 0.2), inset 0 0 14px rgba(255, 100, 100, 0.15); }
+}
+
+@keyframes glowGreen {
+    0%, 100% { box-shadow: 0 0 18px rgba(100, 255, 150, 0.35), 0 0 36px rgba(100, 255, 150, 0.1), inset 0 0 10px rgba(100, 255, 150, 0.1); }
+    50% { box-shadow: 0 0 28px rgba(100, 255, 150, 0.6), 0 0 56px rgba(100, 255, 150, 0.2), inset 0 0 14px rgba(100, 255, 150, 0.15); }
+}
+
+@keyframes pulseAvailable {
+    0%, 100% { box-shadow: 0 0 5px rgba(232, 180, 255, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(232, 180, 255, 0.4); }
+}
+
+/* 节点图标 */
+.tree-node-icon-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+.tree-node-icon-fallback {
+    font-size: 2em;
+    pointer-events: none;
+}
+
+/* 节点标签 */
+.tree-node-label {
+    position: absolute;
+    bottom: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.tree-node-name {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+.tree-node-level {
+    font-size: 0.7em;
+    color: #FFD700;
+}
+
+/* 右下角详情面板 - 相对于弹窗容器定位 */
+.node-detail-panel {
+    position: absolute;
+    bottom: 90px;
+    right: 24px;
+    width: 340px;
+    max-height: calc(100% - 180px);
+    overflow-y: auto;
+    background: rgba(20, 10, 30, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(232, 180, 255, 0.3);
+    border-radius: 16px;
+    padding: 20px;
+    z-index: 20;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+}
+
+.node-detail-panel.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.node-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(232, 180, 255, 0.2);
+}
+
+.node-detail-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8em;
+    background: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.node-detail-icon img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.node-detail-title h3 {
+    color: #fff;
+    font-size: 1.1em;
+    margin: 0 0 4px;
+}
+
+.node-detail-title .node-status {
+    font-size: 0.75em;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.node-detail-body {
+    margin-bottom: 16px;
+}
+
+.node-detail-desc {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9em;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+/* 挑战进度条 */
+.node-detail-challenge {
+    margin-bottom: 12px;
+}
+
+.challenge-label {
+    font-size: 0.75em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.challenge-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.challenge-bar-bg {
+    flex: 1;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.challenge-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FF6464, #FF8A8A);
+    border-radius: 5px;
+    transition: width 0.4s ease;
+}
+
+.tree-node.type-challenge.challenge-complete .challenge-bar-fill {
+    background: linear-gradient(90deg, #4ADE80, #86EFAC);
+}
+
+.challenge-text {
+    font-size: 0.75em;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Consolas', monospace;
+    min-width: 60px;
+    text-align: right;
+}
+
+/* 预览音乐 */
+.node-detail-music {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(232, 180, 255, 0.08);
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.music-label {
+    font-size: 0.85em;
+    color: rgba(232, 180, 255, 0.8);
+}
+
+.music-btn {
+    padding: 6px 14px;
+    background: rgba(232, 180, 255, 0.15);
+    border: 1px solid rgba(232, 180, 255, 0.3);
+    border-radius: 6px;
+    color: #E8B4FF;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.music-btn:hover {
+    background: rgba(232, 180, 255, 0.25);
+    transform: scale(1.05);
+}
+
+.node-detail-cost {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 8px;
+    color: #FFD700;
+    font-size: 0.9em;
+}
+
+.node-detail-cost .cost-label {
+    color: rgba(255, 215, 0, 0.6);
+}
+
+.node-detail-cost .cost-value {
+    font-weight: bold;
+    font-family: 'Consolas', monospace;
+}
+
+.node-detail-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.node-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid;
+    text-align: center;
+}
+
+.node-btn.upgrade {
+    background: rgba(100, 180, 255, 0.15);
+    border-color: rgba(100, 180, 255, 0.35);
+    color: #64B4FF;
+}
+
+.node-btn.upgrade:hover {
+    background: rgba(100, 180, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.node-btn.upgrade:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.node-btn.close {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+
+/* 响应式：小屏幕下详情面板适配 */
+@media (max-width: 600px) {
+    .node-detail-panel {
+        width: calc(100% - 48px);
+        right: 24px;
+        bottom: 90px;
+        max-height: calc(100% - 200px);
+    }
+
+    .node-detail-header {
+        gap: 10px;
+    }
+
+    .node-detail-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5em;
+    }
+
+    .node-detail-title h3 {
+        font-size: 1em;
+    }
+}
+
+
+/* ========== 节点效果面板 ========== */
+.node-detail-effects {
+    margin: 12px 0;
+    padding: 12px;
+    background: rgba(232, 180, 255, 0.05);
+    border: 1px solid rgba(232, 180, 255, 0.15);
+    border-radius: 10px;
+}
+
+.node-effects-title {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #E8B4FF;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.effect-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.effect-row:last-child {
+    border-bottom: none;
+}
+
+.effect-current {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.effect-current::before {
+    content: '◆';
+    color: #FFD700;
+    font-size: 0.7em;
+}
+
+.effect-next {
+    font-size: 0.8em;
+    color: #4ADE80;
+    padding-left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.effect-next::before {
+    content: '⬆';
+    color: #4ADE80;
+    font-size: 0.8em;
+}
+
+/* 未解锁时的效果预览 */
+.effect-next.locked-preview {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.effect-next.locked-preview::before {
+    content: '🔓';
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* 已满级效果 */
+.effect-max {
+    font-size: 0.8em;
+    color: #FFD700;
+    padding-left: 16px;
+}
+
+.effect-max::before {
+    content: '✓';
+    color: #FFD700;
+    margin-right: 4px;
+}
+
+
+/* ========== 节点详情面板折叠状态 ========== */
+
+/* 折叠按钮 */
+.detail-toggle-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(232, 180, 255, 0.25);
+    border-radius: 8px;
+    color: #E8B4FF;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.detail-toggle-btn:hover {
+    background: rgba(232, 180, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* 关闭按钮 - 仅在折叠状态显示 */
+.detail-close-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 100, 100, 0.25);
+    border-radius: 8px;
+    color: #FF6464;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 6px;
+}
+
+.detail-close-btn:hover {
+    background: rgba(255, 100, 100, 0.2);
+    transform: scale(1.1);
+}
+
+/* 折叠状态下显示关闭按钮 */
+.node-detail-panel.collapsed .detail-close-btn {
+    display: flex;
+}
+
+/* 最小化状态 */
+.node-detail-panel.collapsed {
+    width: auto;
+    min-width: 180px;
+    max-width: 280px;
+    max-height: none;
+    padding: 12px 16px;
+    bottom: 90px;
+    right: 24px;
+}
+
+.node-detail-panel.collapsed .node-detail-header {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    align-items: center;
+}
+
+.node-detail-panel.collapsed .node-detail-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1.4em;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* 最小化时图标图片适配 */
+.node-detail-panel.collapsed .node-detail-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.node-detail-panel.collapsed .node-detail-title h3 {
+    font-size: 0.95em;
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.node-detail-panel.collapsed .node-detail-title .node-status {
+    font-size: 0.7em;
+}
+
+/* 隐藏可折叠内容 */
+.node-detail-panel.collapsed .collapsible-content {
+    display: none !important;
+}
+
+/* 最小化时显示紧凑描述 */
+.node-detail-panel.collapsed .node-detail-mini-desc {
+    display: block !important;
+    margin-top: 8px;
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* 展开时隐藏紧凑描述 */
+.node-detail-panel.show-full .node-detail-mini-desc {
+    display: none !important;
+}
+
+/* 响应式：小屏幕折叠适配 */
+@media (max-width: 600px) {
+    .node-detail-panel.collapsed {
+        width: auto;
+        min-width: 160px;
+        max-width: 240px;
+        right: 16px;
+        bottom: 80px;
+        padding: 10px 14px;
+    }
+
+    .node-detail-panel.collapsed .node-detail-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1.2em;
+    }
+
+    .node-detail-panel.collapsed .node-detail-icon img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .node-detail-panel.collapsed .node-detail-title h3 {
+        font-size: 0.9em;
+        max-width: 120px;
+    }
+
+    .node-detail-panel.collapsed .node-detail-mini-desc {
+        font-size: 0.75em;
+        max-width: 200px;
+        -webkit-line-clamp: 2;
+    }
+
+    .node-detail-panel.collapsed .detail-close-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 0.75em;
+    }
+}
