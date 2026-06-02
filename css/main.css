@@ -77,14 +77,99 @@ html, body {
     font-size: 0.75em;
 }
 
-/* 底部提示 */
+/* ========== 底部按钮布局（上移避免遮挡提示）========== */
+
+/* 引擎升级按钮 - 左下角 */
+.engine-main-btn {
+    position: fixed;
+    bottom: 28px;
+    left: 16px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    background: rgba(255, 215, 0, 0.12);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #FFD700;
+}
+
+.engine-main-btn:hover {
+    background: rgba(255, 215, 0, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+}
+
+.engine-btn-icon {
+    font-size: 1.2em;
+}
+
+.engine-btn-text {
+    font-size: 0.8em;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.engine-btn-hint {
+    font-size: 0.65em;
+    color: rgba(255, 215, 0, 0.6);
+    margin-left: 4px;
+}
+
+/* 模块系统按钮 - 右下角 */
+.module-toggle-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 16px;
+    z-index: 10;
+    padding: 10px 18px;
+    background: rgba(232, 180, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(232, 180, 255, 0.3);
+    border-radius: 20px;
+    color: #E8B4FF;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 1px;
+}
+
+.module-toggle-btn:hover {
+    background: rgba(232, 180, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.module-toggle-btn.active {
+    background: rgba(232, 180, 255, 0.3);
+    border-color: #E8B4FF;
+}
+
+.module-toggle-btn .arrow {
+    transition: transform 0.3s ease;
+    font-size: 0.8em;
+}
+
+.module-toggle-btn.active .arrow {
+    transform: rotate(180deg);
+}
+
+/* 底部提示 - 底部中央（在按钮上方） */
 .hint {
     position: fixed;
-    bottom: 20px;  /* 从 20px 改为 90px，给模块按钮留空间 */
+    bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
-    color: rgba(255,255,255,0.35);
-    font-size: 0.8em;
-    z-index: 10;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.75em;
+    z-index: 5;
     pointer-events: none;
+    white-space: nowrap;
 }

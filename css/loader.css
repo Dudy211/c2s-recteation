@@ -1,0 +1,149 @@
+.loader-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0a0514;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.loader-screen.loader-done {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 40px;
+}
+
+/* 3D 旋转立方体 */
+.loader-cube {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: loaderCubeSpin 2s linear infinite;
+}
+
+.loader-cube-face {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(232, 180, 255, 0.15);
+    border: 2px solid rgba(232, 180, 255, 0.4);
+    border-radius: 8px;
+}
+
+.loader-face-front  { transform: rotateY(0deg) translateZ(30px); }
+.loader-face-back   { transform: rotateY(180deg) translateZ(30px); }
+.loader-face-left   { transform: rotateY(-90deg) translateZ(30px); }
+.loader-face-right  { transform: rotateY(90deg) translateZ(30px); }
+.loader-face-top    { transform: rotateX(90deg) translateZ(30px); }
+.loader-face-bottom { transform: rotateX(-90deg) translateZ(30px); }
+
+@keyframes loaderCubeSpin {
+    0% { transform: rotateX(-20deg) rotateY(0deg); }
+    100% { transform: rotateX(-20deg) rotateY(360deg); }
+}
+
+/* 标题 */
+.loader-title {
+    font-size: 2em;
+    font-weight: 900;
+    color: #E8B4FF;
+    letter-spacing: 8px;
+    text-shadow: 0 0 20px rgba(232, 180, 255, 0.4);
+    animation: loaderPulse 2s ease-in-out infinite;
+}
+
+@keyframes loaderPulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+/* 进度条 */
+.loader-progress-wrap {
+    width: 280px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.loader-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #E8B4FF, #FFD700);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px rgba(232, 180, 255, 0.4);
+}
+
+/* 状态文字 */
+.loader-status {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+.loader-percent {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #FFD700;
+    font-family: 'Consolas', monospace;
+}
+
+/* 当前文件名 */
+.loader-files {
+    font-size: 0.75em;
+    color: rgba(232, 180, 255, 0.4);
+    max-width: 300px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 响应式 */
+@media (max-width: 500px) {
+    .loader-content {
+        padding: 24px;
+        gap: 16px;
+    }
+
+    .loader-title {
+        font-size: 1.5em;
+        letter-spacing: 4px;
+    }
+
+    .loader-progress-wrap {
+        width: 220px;
+    }
+
+    .loader-cube {
+        width: 48px;
+        height: 48px;
+    }
+
+    .loader-cube-face {
+        width: 48px;
+        height: 48px;
+    }
+
+    .loader-face-front  { transform: rotateY(0deg) translateZ(24px); }
+    .loader-face-back   { transform: rotateY(180deg) translateZ(24px); }
+    .loader-face-left   { transform: rotateY(-90deg) translateZ(24px); }
+    .loader-face-right  { transform: rotateY(90deg) translateZ(24px); }
+    .loader-face-top    { transform: rotateX(90deg) translateZ(24px); }
+    .loader-face-bottom { transform: rotateX(-90deg) translateZ(24px); }
+}
