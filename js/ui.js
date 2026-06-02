@@ -118,19 +118,31 @@ const UI = {
         }, 150);
     },
     
+    // ========== 实时产量显示（基于实际数据）==========
     update() {
         document.getElementById('tokenAmount').textContent = Math.floor(Game.tokens);
         
-        const rates = Game.getRates();
-        const totalFormatted = rates.total >= 100 ? rates.total.toFixed(0) : rates.total.toFixed(1);
-        const autoFormatted = rates.auto >= 100 ? rates.auto.toFixed(0) : rates.auto.toFixed(1);
+        // 获取实际最近产量
+        const actual = Game.getActualRate();
+        const rate = actual.perSecond;
         
-        if (rates.auto <= 0) {
-            document.getElementById('tokenRate').textContent = `点击+${rates.click} (等效+${totalFormatted}/s)`;
+        // 格式化显示
+        let rateText;
+        if (rate <= 0) {
+            rateText = '点击方块开始收集';
+        } else if (rate < 10) {
+            rateText = `+${rate.toFixed(1)}/s`;
+        } else if (rate < 1000) {
+            rateText = `+${rate.toFixed(0)}/s`;
+        } else if (rate < 1000000) {
+            rateText = `+${(rate / 1000).toFixed(1)}K/s`;
         } else {
-            document.getElementById('tokenRate').textContent = `+${totalFormatted}/s (自${autoFormatted}+点${rates.click})`;
+            rateText = `+${(rate / 1000000).toFixed(2)}M/s`;
         }
         
+        document.getElementById('tokenRate').textContent = rateText;
+        
+        // 属性条更新
         ['damage', 'speed', 'power'].forEach(name => {
             const stat = Game.stats[name];
             

@@ -9,8 +9,14 @@ const Contributors = {
         },
         {
             name: 'Semblance',
-            role: '最初灵感提供',
+            role: '灵感来自',
             qq: '1040248317',
+            github: ''
+        },
+        {
+            name: '...',
+            role: '测试员',
+            qq: '1357674351',
             github: ''
         },
         {
