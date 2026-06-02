@@ -1,0 +1,588 @@
+{
+    "nodes": [
+        {
+            "id": "core",
+            "name": "引擎核心",
+            "type": "upgrade",
+            "description": "一切的开始，提供基础引擎功率",
+            "icon": "file/img/joker.jpeg",
+            "fallbackIcon": "◈",
+            "color": "#FFD700",
+            "cost": 0,
+            "level": 1,
+            "maxLevel": 1,
+            "prev": null,
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "globalMult": {
+                    "base": 1.0,
+                    "perLevel": 0.05,
+                    "desc": "全局产出倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "power_amp",
+            "name": "能量增幅",
+            "type": "upgrade",
+            "description": "提升全局代币产出倍率",
+            "icon": "",
+            "fallbackIcon": "⚡",
+            "color": "#64B4FF",
+            "cost": 15,
+            "level": 0,
+            "maxLevel": 10,
+            "prev": "core",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "globalMult": {
+                    "base": 1.0,
+                    "perLevel": 0.15,
+                    "desc": "全局产出倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "power_overload",
+            "name": "能量超载",
+            "type": "upgrade",
+            "description": "巨幅提升全局产出",
+            "icon": "",
+            "fallbackIcon": "⚡",
+            "color": "#64B4FF",
+            "cost": 80,
+            "level": 0,
+            "maxLevel": 5,
+            "prev": "power_amp",
+            "challenge": null,
+            "previewMusic": "audio/power_overload.mp3",
+            "effects": {
+                "globalMult": {
+                    "base": 1.0,
+                    "perLevel": 0.5,
+                    "desc": "全局产出倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "click_master",
+            "name": "点击大师",
+            "type": "challenge",
+            "description": "累计点击 300 次以解锁升级能力",
+            "icon": "",
+            "fallbackIcon": "👆",
+            "color": "#FF6464",
+            "cost": 25,
+            "level": 0,
+            "maxLevel": 3,
+            "prev": "core",
+            "challenge": {
+                "type": "clicks",
+                "target": 300
+            },
+            "previewMusic": "",
+            "effects": {
+                "clickMult": {
+                    "base": 1.0,
+                    "perLevel": 0.3,
+                    "desc": "点击收益倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "click_frenzy",
+            "name": "点击狂热",
+            "type": "upgrade",
+            "description": "点击收益获得额外倍率",
+            "icon": "",
+            "fallbackIcon": "🔥",
+            "color": "#64B4FF",
+            "cost": 40,
+            "level": 0,
+            "maxLevel": 5,
+            "prev": "click_master",
+            "challenge": null,
+            "previewMusic": "audio/click_frenzy.mp3",
+            "effects": {
+                "clickMult": {
+                    "base": 1.0,
+                    "perLevel": 0.25,
+                    "desc": "点击收益倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "auto_boost",
+            "name": "自动化考验",
+            "type": "challenge",
+            "description": "累计获得 5,000 代币以解锁",
+            "icon": "",
+            "fallbackIcon": "🤖",
+            "color": "#FF6464",
+            "cost": 30,
+            "level": 0,
+            "maxLevel": 1,
+            "prev": "core",
+            "challenge": {
+                "type": "tokens",
+                "target": 5000
+            },
+            "previewMusic": "",
+            "effects": {
+                "autoMult": {
+                    "base": 1.0,
+                    "perLevel": 0.2,
+                    "desc": "自动产出倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "auto_core",
+            "name": "自动核心",
+            "type": "upgrade",
+            "description": "自动产出引擎代币",
+            "icon": "",
+            "fallbackIcon": "🔧",
+            "color": "#64B4FF",
+            "cost": 25,
+            "level": 0,
+            "maxLevel": 10,
+            "prev": "auto_boost",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "autoMult": {
+                    "base": 1.0,
+                    "perLevel": 0.15,
+                    "desc": "自动产出倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "crit_source",
+            "name": "暴击之源",
+            "type": "challenge",
+            "description": "伤害等级达到 2 以解锁",
+            "icon": "",
+            "fallbackIcon": "🎯",
+            "color": "#FF6464",
+            "cost": 50,
+            "level": 0,
+            "maxLevel": 1,
+            "prev": "core",
+            "challenge": {
+                "type": "statLevel",
+                "stat": "damage",
+                "target": 2
+            },
+            "previewMusic": "",
+            "effects": {
+                "critChance": {
+                    "base": 0,
+                    "perLevel": 0.05,
+                    "desc": "暴击率 +{val}%",
+                    "format": "percent"
+                },
+                "critMult": {
+                    "base": 1.0,
+                    "perLevel": 0.1,
+                    "desc": "暴击倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "crit_amp",
+            "name": "暴击增幅",
+            "type": "upgrade",
+            "description": "提升暴击伤害倍率",
+            "icon": "",
+            "fallbackIcon": "💥",
+            "color": "#64B4FF",
+            "cost": 60,
+            "level": 0,
+            "maxLevel": 5,
+            "prev": "crit_source",
+            "challenge": null,
+            "previewMusic": "audio/crit_amp.mp3",
+            "effects": {
+                "critMult": {
+                    "base": 1.0,
+                    "perLevel": 0.2,
+                    "desc": "暴击倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "speed_core",
+            "name": "速度核心",
+            "type": "upgrade",
+            "description": "独立的速度升级路线起点",
+            "icon": "",
+            "fallbackIcon": "💨",
+            "color": "#00D4FF",
+            "cost": 0,
+            "level": 1,
+            "maxLevel": 1,
+            "prev": null,
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "speedMult": {
+                    "base": 1.0,
+                    "perLevel": 0.05,
+                    "desc": "速度倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "speed_boost",
+            "name": "速度增幅",
+            "type": "upgrade",
+            "description": "提升自动产出频率",
+            "icon": "",
+            "fallbackIcon": "⏩",
+            "color": "#00D4FF",
+            "cost": 20,
+            "level": 0,
+            "maxLevel": 10,
+            "prev": "speed_core",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "speedMult": {
+                    "base": 1.0,
+                    "perLevel": 0.1,
+                    "desc": "速度倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "speed_overdrive",
+            "name": "速度超载",
+            "type": "upgrade",
+            "description": "极限提升产出速度",
+            "icon": "",
+            "fallbackIcon": "⚡",
+            "color": "#00D4FF",
+            "cost": 100,
+            "level": 0,
+            "maxLevel": 3,
+            "prev": "speed_boost",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "speedMult": {
+                    "base": 1.0,
+                    "perLevel": 0.3,
+                    "desc": "速度倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "haste_mastery",
+            "name": "急速精通",
+            "type": "challenge",
+            "description": "速度等级达到 3 以解锁",
+            "icon": "",
+            "fallbackIcon": "⌛",
+            "color": "#FF6464",
+            "cost": 40,
+            "level": 0,
+            "maxLevel": 1,
+            "prev": "speed_core",
+            "challenge": {
+                "type": "statLevel",
+                "stat": "speed",
+                "target": 3
+            },
+            "previewMusic": "",
+            "effects": {
+                "speedMult": {
+                    "base": 1.0,
+                    "perLevel": 0.25,
+                    "desc": "速度倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "time_warp",
+            "name": "时间扭曲",
+            "type": "upgrade",
+            "description": "时间流速异常，产出翻倍",
+            "icon": "",
+            "fallbackIcon": "🌀",
+            "color": "#00D4FF",
+            "cost": 120,
+            "level": 0,
+            "maxLevel": 3,
+            "prev": "haste_mastery",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "globalMult": {
+                    "base": 1.0,
+                    "perLevel": 0.5,
+                    "desc": "全局产出倍率 +{val}%"
+                },
+                "speedMult": {
+                    "base": 1.0,
+                    "perLevel": 0.2,
+                    "desc": "速度倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "quantum_core",
+            "name": "量子核心",
+            "type": "upgrade",
+            "description": "需要能量和速度双核心激活",
+            "icon": "",
+            "fallbackIcon": "🔮",
+            "color": "#E8B4FF",
+            "cost": 200,
+            "level": 0,
+            "maxLevel": 1,
+            "prev": [
+                "power_overload",
+                "speed_overdrive"
+            ],
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "globalMult": {
+                    "base": 1.0,
+                    "perLevel": 0.8,
+                    "desc": "全局产出倍率 +{val}%"
+                },
+                "quantumFold": {
+                    "base": 0,
+                    "perLevel": 0.1,
+                    "desc": "量子折叠触发率 +{val}%",
+                    "format": "percent"
+                }
+            }
+        },
+        {
+            "id": "quantum_fusion",
+            "name": "量子融合",
+            "type": "upgrade",
+            "description": "量子态叠加，所有收益×3",
+            "icon": "",
+            "fallbackIcon": "☯️",
+            "color": "#E8B4FF",
+            "cost": 500,
+            "level": 0,
+            "maxLevel": 1,
+            "prev": "quantum_core",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "globalMult": {
+                    "base": 1.0,
+                    "perLevel": 2.0,
+                    "desc": "全局产出倍率 +{val}%"
+                },
+                "clickMult": {
+                    "base": 1.0,
+                    "perLevel": 1.0,
+                    "desc": "点击收益倍率 +{val}%"
+                },
+                "autoMult": {
+                    "base": 1.0,
+                    "perLevel": 1.0,
+                    "desc": "自动产出倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "void_gate",
+            "name": "虚空之门",
+            "type": "challenge",
+            "description": "累计获得 50,000 代币以开启虚空科技",
+            "icon": "",
+            "fallbackIcon": "🌌",
+            "color": "#FF6464",
+            "cost": 300,
+            "level": 0,
+            "maxLevel": 1,
+            "prev": "quantum_fusion",
+            "challenge": {
+                "type": "tokens",
+                "target": 50000
+            },
+            "previewMusic": "",
+            "effects": {
+                "voidMult": {
+                    "base": 1.0,
+                    "perLevel": 0.3,
+                    "desc": "虚空倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "void_drain",
+            "name": "虚空汲取",
+            "type": "upgrade",
+            "description": "从虚空中汲取额外资源",
+            "icon": "",
+            "fallbackIcon": "🌑",
+            "color": "#9D4EDD",
+            "cost": 400,
+            "level": 0,
+            "maxLevel": 5,
+            "prev": "void_gate",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "voidMult": {
+                    "base": 1.0,
+                    "perLevel": 0.25,
+                    "desc": "虚空倍率 +{val}%"
+                },
+                "autoMult": {
+                    "base": 1.0,
+                    "perLevel": 0.2,
+                    "desc": "自动产出倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "void_mirror",
+            "name": "虚空之镜",
+            "type": "upgrade",
+            "description": "反射伤害，点击收益暴击",
+            "icon": "",
+            "fallbackIcon": "🪞",
+            "color": "#9D4EDD",
+            "cost": 400,
+            "level": 0,
+            "maxLevel": 5,
+            "prev": "void_gate",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "voidMult": {
+                    "base": 1.0,
+                    "perLevel": 0.25,
+                    "desc": "虚空倍率 +{val}%"
+                },
+                "clickMult": {
+                    "base": 1.0,
+                    "perLevel": 0.2,
+                    "desc": "点击收益倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "void_nova",
+            "name": "虚空新星",
+            "type": "upgrade",
+            "description": "爆发式产出，短时间内收益×10",
+            "icon": "",
+            "fallbackIcon": "💫",
+            "color": "#9D4EDD",
+            "cost": 600,
+            "level": 0,
+            "maxLevel": 3,
+            "prev": "void_gate",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "voidMult": {
+                    "base": 1.0,
+                    "perLevel": 0.5,
+                    "desc": "虚空倍率 +{val}%"
+                },
+                "globalMult": {
+                    "base": 1.0,
+                    "perLevel": 0.3,
+                    "desc": "全局产出倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "ultimate_core",
+            "name": "终极核心",
+            "type": "challenge",
+            "description": "需要暴击、点击、虚空三条路线全部解锁",
+            "icon": "",
+            "fallbackIcon": "👑",
+            "color": "#FFD700",
+            "cost": 1000,
+            "level": 0,
+            "maxLevel": 1,
+            "prev": [
+                "crit_amp",
+                "click_frenzy",
+                "void_nova"
+            ],
+            "challenge": {
+                "type": "moduleLevel",
+                "target": 30
+            },
+            "previewMusic": "",
+            "effects": {
+                "globalMult": {
+                    "base": 1.0,
+                    "perLevel": 1.0,
+                    "desc": "全局产出倍率 +{val}%"
+                },
+                "critChance": {
+                    "base": 0,
+                    "perLevel": 0.1,
+                    "desc": "暴击率 +{val}%",
+                    "format": "percent"
+                },
+                "critMult": {
+                    "base": 1.0,
+                    "perLevel": 0.5,
+                    "desc": "暴击倍率 +{val}%"
+                }
+            }
+        },
+        {
+            "id": "ultimate_power",
+            "name": "终极之力",
+            "type": "upgrade",
+            "description": "超越极限，所有系统效率×5",
+            "icon": "",
+            "fallbackIcon": "🔱",
+            "color": "#FFD700",
+            "cost": 2000,
+            "level": 0,
+            "maxLevel": 1,
+            "prev": "ultimate_core",
+            "challenge": null,
+            "previewMusic": "",
+            "effects": {
+                "globalMult": {
+                    "base": 1.0,
+                    "perLevel": 4.0,
+                    "desc": "全局产出倍率 +{val}%"
+                },
+                "clickMult": {
+                    "base": 1.0,
+                    "perLevel": 2.0,
+                    "desc": "点击收益倍率 +{val}%"
+                },
+                "autoMult": {
+                    "base": 1.0,
+                    "perLevel": 2.0,
+                    "desc": "自动产出倍率 +{val}%"
+                },
+                "speedMult": {
+                    "base": 1.0,
+                    "perLevel": 1.0,
+                    "desc": "速度倍率 +{val}%"
+                },
+                "voidMult": {
+                    "base": 1.0,
+                    "perLevel": 1.0,
+                    "desc": "虚空倍率 +{val}%"
+                }
+            }
+        }
+    ]
+}
