@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CELLS - 紫色方块发电机</title>
+    <link rel="stylesheet" href="css/loader.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/stats.css">
     <link rel="stylesheet" href="css/menu.css">
@@ -12,8 +13,31 @@
     <link rel="stylesheet" href="css/save.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/contributors.css">
+    <link rel="stylesheet" href="css/engine/modal.css">
+    <link rel="stylesheet" href="css/engine/viewport.css">
+    <link rel="stylesheet" href="css/engine/nodes.css">
 </head>
 <body>
+    <div id="loaderScreen" class="loader-screen">
+        <div class="loader-content">
+            <div class="loader-cube">
+                <div class="loader-cube-face loader-face-front"></div>
+                <div class="loader-cube-face loader-face-back"></div>
+                <div class="loader-cube-face loader-face-left"></div>
+                <div class="loader-cube-face loader-face-right"></div>
+                <div class="loader-cube-face loader-face-top"></div>
+                <div class="loader-cube-face loader-face-bottom"></div>
+            </div>
+            <div class="loader-title">CELLS</div>
+            <div class="loader-progress-wrap">
+                <div class="loader-progress-bar" id="loaderProgressBar"></div>
+            </div>
+            <div class="loader-status" id="loaderStatus">正在加载资源...</div>
+            <div class="loader-percent" id="loaderPercent">0%</div>
+            <div class="loader-files" id="loaderFiles"></div>
+        </div>
+    </div>
+
     <div class="cell-label">CELLs</div>
     
     <div class="token-display">
@@ -21,6 +45,12 @@
         <span class="token-amount" id="tokenAmount">0</span>
         <span class="token-rate" id="tokenRate">+0/s | 点击+1</span>
     </div>
+
+    <button class="engine-main-btn" id="engineMainBtn" onclick="EngineSystem.openEngineModal()">
+        <span class="engine-btn-icon">⚙️</span>
+        <span class="engine-btn-text">引擎升级</span>
+        <span class="engine-btn-hint">永久强化</span>
+    </button>
 
     <div class="stats-panel">
         <div class="stat-row" data-stat="damage">
@@ -121,20 +151,27 @@
                 查看项目源码
             </a>
         </div>
+        
         <div class="version-info">
-            <span class="version-tag">v0.4.4♡ · Level Up!</span>
+            <span class="version-tag">v1.3.7 · BUG fixing... <(。_。)></span>
             <div class="copyright">CELLS Fan Project · Not affiliated</div>
         </div>
     </aside>
 
     <div id="canvas-container"></div>
 
-    <script src="cdn/three.min.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="lib/three.min.js"></script>
+    <script src="lib/d3.min.js"></script>
     <script src="js/fps.js"></script>
+    <script src="js/recorder.js"></script>
     <script src="js/modules.js"></script>
+    <script src="js/contributors.js"></script>
+    <script src="js/engine/core.js"></script>
+    <script src="js/engine/viewport.js"></script>
+    <script src="js/engine/nodes.js"></script>
     <script src="js/save.js"></script>
     <script src="js/reset.js"></script>
-    <script src="js/contributors.js"></script>
     <script src="js/cube.js"></script>
     <script src="js/input.js"></script>
     <script src="js/game.js"></script>
