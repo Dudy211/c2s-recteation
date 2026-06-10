@@ -268,11 +268,14 @@ Object.assign(EngineSystem, {
             const dx = x2 - x1, dy = y2 - y1;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < 1) return;
-            const nodeRadius = 45;
-            const shorten = nodeRadius + 8;
-            const ratio = (dist - shorten) / dist;
-            const endX = x1 + dx * ratio;
-            const endY = y1 + dy * ratio;
+            const nodeRadius = 40;
+            const shorten = nodeRadius + 4;
+            const startRatio = shorten / dist;
+            const endRatio = (dist - shorten) / dist;
+            const startX = x1 + dx * startRatio;
+            const startY = y1 + dy * startRatio;
+            const endX = x1 + dx * endRatio;
+            const endY = y1 + dy * endRatio;
             const curvature = Math.min(dist * 0.25, 60);
             const midX = (x1 + endX) / 2;
             const midY = (y1 + endY) / 2;
@@ -281,7 +284,7 @@ Object.assign(EngineSystem, {
             const cpX = midX + perpX;
             const cpY = midY + perpY;
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            path.setAttribute('d', `M ${x1} ${y1} Q ${cpX} ${cpY} ${endX} ${endY}`);
+            path.setAttribute('d', `M ${startX} ${startY} Q ${cpX} ${cpY} ${endX} ${endY}`);
             path.setAttribute('fill', 'none');
             path.setAttribute('stroke-linecap', 'round');
             path.setAttribute('class', 'tree-link');
@@ -345,11 +348,14 @@ Object.assign(EngineSystem, {
             const dx = x2 - x1, dy = y2 - y1;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < 1) return;
-            const nodeRadius = 45;
-            const shorten = nodeRadius + 8;
-            const ratio = (dist - shorten) / dist;
-            const endX = x1 + dx * ratio;
-            const endY = y1 + dy * ratio;
+            const nodeRadius = 40;
+            const shorten = nodeRadius + 4;
+            const startRatio = shorten / dist;
+            const endRatio = (dist - shorten) / dist;
+            const startX = x1 + dx * startRatio;
+            const startY = y1 + dy * startRatio;
+            const endX = x1 + dx * endRatio;
+            const endY = y1 + dy * endRatio;
             const curvature = Math.min(dist * 0.25, 60);
             const midX = (x1 + endX) / 2;
             const midY = (y1 + endY) / 2;
@@ -357,7 +363,7 @@ Object.assign(EngineSystem, {
             const perpY = dx / dist * curvature;
             const cpX = midX + perpX;
             const cpY = midY + perpY;
-            path.setAttribute('d', `M ${x1} ${y1} Q ${cpX} ${cpY} ${endX} ${endY}`);
+            path.setAttribute('d', `M ${startX} ${startY} Q ${cpX} ${cpY} ${endX} ${endY}`);
             const grad = this.linkGradients.get(sourceId + '->' + targetId);
             if (grad) {
                 grad.setAttribute('x1', x1); grad.setAttribute('y1', y1);

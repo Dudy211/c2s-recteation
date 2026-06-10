@@ -285,7 +285,9 @@ Object.assign(EngineSystem, {
         this.playClickSound();
         this.animateRouteToNode(node.id);
         if (this.selectedNode && this.selectedNode.id === node.id) {
-            if (node.level >= node.maxLevel) { this.showNodeDetail(node); return; }
+            const isUnlocked = this.unlockedNodes.has(node.id);
+            // 修复：只有已解锁且满级时才阻止升级；未解锁节点始终允许尝试解锁
+            if (isUnlocked && node.level >= node.maxLevel) { this.showNodeDetail(node); return; }
             const isChallenge = node.type === 'challenge';
             const challengeDone = this.isChallengeCompleted(node);
             if (isChallenge && !challengeDone) { this.showNodeDetail(node); return; }
@@ -356,16 +358,34 @@ Object.assign(EngineSystem, {
                 actionsEl.innerHTML = `<button class="node-btn close" onclick="EngineSystem.closeDetail()">关闭</button>`;
             }
         } else if (parentUnlocked) {
-            if (isChallenge) {
-                statusEl.textContent = '挑战节点 - 完成挑战后解锁升级'; statusEl.style.color = '#FF6464';
+            if (isChallenge && !challengeDone) {
+                statusEl.textContent = '挑战节点 - 完成挑战后解锁'; statusEl.style.color = '#FF6464';
                 costEl.style.display = 'none';
+                challengeEl.style.display = 'block';
+                const prog = Recorder.getProgress(node.id);
+                if (prog) {
+                    document.getElementById('challengeBarFill').style.width = prog.percent + '%';
+                    document.getElementById('challengeText').textContent = `${Math.floor(prog.current)} / ${prog.target}`;
+                }
                 actionsEl.innerHTML = `<button class="node-btn close" onclick="EngineSystem.closeDetail()">关闭</button>`;
+            } else if (isChallenge && challengeDone) {
+                statusEl.textContent = '挑战完成 - 可解锁'; statusEl.style.color = '#4ADE80';
+                costEl.style.display = 'flex';
+                // 修复：cost 为 0 时显示"免费"
+                const displayCost2 = node.cost === 0 ? '免费' : node.cost;
+                document.getElementById('costValue').textContent = displayCost2;
+                const canAfford2 = this.engineTokens >= node.cost;
+                const btnText2 = node.cost === 0 ? '🔓 免费解锁' : `🔓 解锁 (${node.cost} ⚡)`;
+                actionsEl.innerHTML = `<button class="node-btn upgrade" ${!canAfford2 ? 'disabled' : ''} onclick="EngineSystem.tryUpgrade('${node.id}')">${btnText2}</button><button class="node-btn close" onclick="EngineSystem.closeDetail()">关闭</button>`;
             } else {
                 statusEl.textContent = '可解锁'; statusEl.style.color = '#64B4FF';
                 costEl.style.display = 'flex';
-                document.getElementById('costValue').textContent = node.cost;
+                // 修复：cost 为 0 时显示"免费"
+                const displayCost = node.cost === 0 ? '免费' : node.cost;
+                document.getElementById('costValue').textContent = displayCost;
                 const canAfford = this.engineTokens >= node.cost;
-                actionsEl.innerHTML = `<button class="node-btn upgrade" ${!canAfford ? 'disabled' : ''} onclick="EngineSystem.tryUpgrade('${node.id}')">🔓 解锁 (${node.cost} ⚡)</button><button class="node-btn close" onclick="EngineSystem.closeDetail()">关闭</button>`;
+                const btnText = node.cost === 0 ? '🔓 免费解锁' : `🔓 解锁 (${node.cost} ⚡)`;
+                actionsEl.innerHTML = `<button class="node-btn upgrade" ${!canAfford ? 'disabled' : ''} onclick="EngineSystem.tryUpgrade('${node.id}')">${btnText}</button><button class="node-btn close" onclick="EngineSystem.closeDetail()">关闭</button>`;
             }
         } else {
             statusEl.textContent = `未解锁 (需要: ${node.prev.map(pid => this.nodeMap.get(pid)?.name || pid).join(' + ')})`;
@@ -412,14 +432,15 @@ Object.assign(EngineSystem, {
             return;
         }
 
-        if (node.level >= node.maxLevel) {
+        const isUnlocked = this.unlockedNodes.has(node.id);
+
+        // 修复：只有已解锁且满级时才阻止；未解锁节点始终允许尝试解锁
+        if (isUnlocked && node.level >= node.maxLevel) {
             if (typeof UI !== 'undefined') {
                 UI.showFloatText(window.innerWidth / 2, window.innerHeight / 2, '该节点已满级!', 'system');
             }
             return;
         }
-
-        const isUnlocked = this.unlockedNodes.has(node.id);
         const isChallenge = node.type === 'challenge';
         const challengeDone = this.isChallengeCompleted(node);
 
@@ -439,7 +460,10 @@ Object.assign(EngineSystem, {
             return;
         }
 
-        if (!confirm(`确定要${isUnlocked ? '升级' : '解锁'} "${node.name}" 吗？\n需要消耗: ${cost.toFixed(2)} 引擎代币`)) return;
+        // 修复：cost 为 0 的核心节点直接解锁，跳过 confirm（APK WebView 中 confirm 可能异常）
+        if (cost > 0) {
+            if (!confirm(`确定要${isUnlocked ? '升级' : '解锁'} "${node.name}" 吗？\n需要消耗: ${cost.toFixed(2)} 引擎代币`)) return;
+        }
 
         this.engineTokens -= cost;
         this.playUpgradeSound();

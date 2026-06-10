@@ -25,6 +25,16 @@ var EngineSystem = window.EngineSystem || {
         await this.loadTreeData();
         this.initAudio();
         this.loadProgress();
+        // 修复：确保核心节点始终解锁（APK 环境下存档可能丢失核心节点）
+        if (this.graph && this.graph.nodes) {
+            this.graph.nodes.forEach(node => {
+                if (node.cost === 0 && node.prev === null) {
+                    this.unlockedNodes.add(node.id);
+                    if (!node.level) node.level = 1;
+                }
+            });
+            this.saveProgress();
+        }
     },
 
     initAudio() {
@@ -91,6 +101,10 @@ var EngineSystem = window.EngineSystem || {
         await this.preloadIcons();
         this.prepareForceData();
         this.dataLoaded = true;
+        // 修复：引擎数据加载完成后，回放 Recorder 缓存的待处理事件（APK环境挑战进度修复）
+        if (typeof Recorder !== 'undefined' && Recorder.flushPending) {
+            Recorder.flushPending();
+        }
     },
 
     async preloadIcons() {
@@ -170,7 +184,11 @@ var EngineSystem = window.EngineSystem || {
             try {
                 const data = JSON.parse(saved);
                 this.engineTokens = data.engineTokens || 0;
-                this.unlockedNodes = new Set(data.unlockedNodes || ['core', 'speed_core']);
+                // 修复：确保核心节点始终被解锁，即使存档数据异常
+                const savedUnlocked = data.unlockedNodes || [];
+                const coreNodes = ['core', 'speed_core'];
+                const mergedUnlocked = new Set([...coreNodes, ...savedUnlocked]);
+                this.unlockedNodes = mergedUnlocked;
                 this.nodeLevels = data.nodeLevels || {};
                 this.challengeProgress = data.challengeProgress || {};
                 this.challengeCompleted = new Set(data.challengeCompleted || []);
@@ -286,6 +304,11 @@ var EngineSystem = window.EngineSystem || {
             });
         }
         if (Game.tokens !== undefined) Recorder.recordState('tokens', Math.floor(Game.tokens));
+        // 修复：刷新点击次数挑战进度（补偿 APK 环境下引擎初始化前丢失的点击记录）
+        try {
+            const totalClicks = parseInt(localStorage.getItem('cells_total_clicks') || '0');
+            if (totalClicks > 0) Recorder.recordState('clicks', totalClicks);
+        } catch (e) {}
     },
 
     getEngineEffects() {
