@@ -4,6 +4,8 @@ const Recorder = {
 
     // ========== 初始化 ==========
     init() {
+        this.pendingRecords = [];
+        this.pendingStates = [];
         this.register('clicks', {
             getValue: () => 1,
             getTarget: (node) => node.challenge?.target || 0,
@@ -60,7 +62,11 @@ const Recorder = {
             return completedNodes;
         }
 
-        if (!EngineSystem.graph || !EngineSystem.graph.nodes) return completedNodes;
+        // 修复：APK 环境下引擎可能尚未初始化完成，缓存事件待后续回放
+        if (!EngineSystem.graph || !EngineSystem.graph.nodes) {
+            this.pendingRecords.push({ type, args });
+            return completedNodes;
+        }
 
         const increment = handler.getValue(...args);
 
@@ -106,7 +112,11 @@ const Recorder = {
         const handler = this.recorders.get(type);
         if (!handler) return completedNodes;
 
-        if (!EngineSystem.graph || !EngineSystem.graph.nodes) return completedNodes;
+        // 修复：APK 环境下引擎可能尚未初始化完成，缓存状态待后续回放
+        if (!EngineSystem.graph || !EngineSystem.graph.nodes) {
+            this.pendingStates.push({ type, currentValue });
+            return completedNodes;
+        }
 
         EngineSystem.graph.nodes.forEach(node => {
             if (!node.challenge || node.challenge.type !== type) return;
@@ -173,5 +183,20 @@ const Recorder = {
         EngineSystem.challengeProgress = {};
         EngineSystem.challengeCompleted.clear();
         EngineSystem.saveProgress();
+    },
+
+    // 修复：APK 环境下引擎初始化完成后，回放缓存的挑战事件
+    flushPending() {
+        if (!EngineSystem.graph || !EngineSystem.graph.nodes) return;
+        const records = [...this.pendingRecords];
+        this.pendingRecords = [];
+        records.forEach(({ type, args }) => {
+            this.record(type, ...args);
+        });
+        const states = [...this.pendingStates];
+        this.pendingStates = [];
+        states.forEach(({ type, currentValue }) => {
+            this.recordState(type, currentValue);
+        });
     }
 };

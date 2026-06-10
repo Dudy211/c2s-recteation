@@ -102,6 +102,11 @@ const Game = {
         clearTimeout(this.comboTimer);
         this.comboTimer = setTimeout(() => this.combo = 0, 400);
         if (typeof Recorder !== 'undefined') Recorder.record('clicks');
+        // 修复：保存总点击次数到 localStorage，用于 APK 环境下引擎初始化完成后补偿挑战进度
+        try {
+            const totalClicks = parseInt(localStorage.getItem('cells_total_clicks') || '0') + 1;
+            localStorage.setItem('cells_total_clicks', totalClicks);
+        } catch (e) {}
     },
 
     upgrade(statName) {
